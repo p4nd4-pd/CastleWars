@@ -1,6 +1,7 @@
 package CastleWarsPackage;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,7 +14,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 
-
 public class Handler implements Listener{
 	
 	@EventHandler
@@ -23,9 +23,36 @@ public class Handler implements Listener{
 		player.getInventory().addItem(item);
 	}
 	
+	/* Name of plugin */
+	private String PluginName = "CastleWars";
+	
+	/* 	Id of task	&& time for task*/
+	private int id;
+	private int TimeForTask = 20;
+	
+	/*---------SecondToWaitForSpawn------------*/
+	private int SecondToWaitForSpawn = 10;
+	private int ReloaderOfTimeSpawn = 10;
+	
+	/* Seconds for spawn of Red and Blue Team*/
+	//private int secondsForSpawn = 80;
+	
+	/*-----------BLUE TEAM SPAWN LOCATION----------------*/
+	private double[] BlueTeamCoordination = {254.00, 30.00, 17.00};
+	
+	/*-----------red TEAM SPAWN LOCATION----------------*/
+	private double[] RedTeamCoordination = {232.00, 30.00, 17.00};
+	
 	/* Create at inventory */
 	private Inventory InventoryTeamBlu;
 	private Inventory InventoryTeamRed;
+	
+	/*	 SIZE  OF INVENTORY		*/
+	private int SizeOfInventory = 3 * 9; // 3-rige 9-colone
+	
+	/*_____Name of Inventorys_______*/
+	private String NameOfINventory_BlueTeam = "Blue Team";
+	private String NameOfINventory_RedTeam = "Red Team"; 
 	
 	/*	Create Item of Inventory */
 	private ItemStack Bow = new ItemStack(Material.BOW);
@@ -79,7 +106,7 @@ public class Handler implements Listener{
 		if(ivent.getAction() == Action.RIGHT_CLICK_BLOCK && ivent.getClickedBlock().getType() == Material.BLUE_WOOL){
 			
 			/* Set default size of inventory*/
-			InventoryTeamBlu = Bukkit.createInventory(null, 27, "Blue Team");
+			InventoryTeamBlu = Bukkit.createInventory(null, SizeOfInventory, NameOfINventory_BlueTeam);
 			
 			/* Add item to inventory*/
 			for (int i = 0; i < InventoryTeamBlu.getSize(); i++) {
@@ -105,7 +132,7 @@ public class Handler implements Listener{
 			if(ivent.getAction() == Action.RIGHT_CLICK_BLOCK && ivent.getClickedBlock().getType() == Material.RED_WOOL){
 				
 				/* Set default size of inventory*/
-				InventoryTeamRed = Bukkit.createInventory(null, 27, "Red Team");
+				InventoryTeamRed = Bukkit.createInventory(null, SizeOfInventory, NameOfINventory_RedTeam);
 				
 				/* Add item to inventory*/
 				for (int i = 0; i < InventoryTeamRed.getSize(); i++) {
@@ -130,11 +157,8 @@ public class Handler implements Listener{
 		}
 	}
 	
-	
-
 	@EventHandler
 	public void InventoryChecker(InventoryClickEvent e){
-		
 		/* NO set/get item to castom Inventory	*/
 		Inventory i = e.getInventory();
 		
@@ -201,6 +225,47 @@ public class Handler implements Listener{
 		}
 		
 		
+		/*------------TELEPORT TO MAP BUTTLE-------------*/
+		
+		if(i.equals(InventoryTeamBlu)){
+			
+			Runnable s = new Runnable() {
+				
+				@Override
+				public void run() {
+					e.getWhoClicked().sendMessage("Wait Second : " + SecondToWaitForSpawn);
+					SecondToWaitForSpawn--;
+					if(SecondToWaitForSpawn == 0){
+						e.getWhoClicked().sendMessage("Teleporting...");
+						Bukkit.getScheduler().cancelTask(id);
+						e.getWhoClicked().teleport(new Location(e.getWhoClicked().getLocation().getWorld(), BlueTeamCoordination[0], BlueTeamCoordination[1], BlueTeamCoordination[2]));
+						SecondToWaitForSpawn = ReloaderOfTimeSpawn;
+					}
+				}
+			};
+			id = Bukkit.getScheduler().scheduleSyncRepeatingTask(Bukkit.getPluginManager().getPlugin(PluginName), s, 0, TimeForTask);
+		}
+			//Bukkit.getScheduler().runTaskLater(Bukkit.getPluginManager().getPlugin(PluginName), r, secondsForSpawn);
+		
+		/*------------TELEPORT TO MAP BUTTLE-------------*/
+		if(i.equals(InventoryTeamRed)){
+			
+				Runnable s = new Runnable() {
+				
+				@Override
+				public void run() {
+					e.getWhoClicked().sendMessage("Wait Second : " + SecondToWaitForSpawn);
+					SecondToWaitForSpawn--;
+					if(SecondToWaitForSpawn == 0){
+						e.getWhoClicked().sendMessage("Teleporting...");
+						Bukkit.getScheduler().cancelTask(id);
+						e.getWhoClicked().teleport(new Location(e.getWhoClicked().getLocation().getWorld(), RedTeamCoordination[0], RedTeamCoordination[1], RedTeamCoordination[2]));
+						SecondToWaitForSpawn = ReloaderOfTimeSpawn;
+					}	
+				}
+			};
+			id = Bukkit.getScheduler().scheduleSyncRepeatingTask(Bukkit.getPluginManager().getPlugin(PluginName), s, 0, TimeForTask);
+
+		}
 	}
-	
 }

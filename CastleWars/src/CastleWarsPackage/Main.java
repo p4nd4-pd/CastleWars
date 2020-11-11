@@ -1,9 +1,10 @@
 package CastleWarsPackage;
 
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Main  extends JavaPlugin{
+public class Main  extends JavaPlugin implements Plugin{
 	
 
 	
