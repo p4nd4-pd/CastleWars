@@ -15,6 +15,13 @@ import org.bukkit.inventory.ItemStack;
 
 
 public class Handler implements Listener{
+
+	private Main MainClassOfPlugin;
+	
+	/*----------CREAT CONSTRUCTOR--------------*/
+	public Handler(Main MainClassOfPlugin){
+		this.MainClassOfPlugin = MainClassOfPlugin; 
+	}
 	
 	@EventHandler
 	public void join(PlayerJoinEvent event){
@@ -24,7 +31,7 @@ public class Handler implements Listener{
 	}
 	
 	/* Name of plugin */
-	private String PluginName = "CastleWars";
+	private String PluginName = MainClassOfPlugin.getConfig().getString("PluginName");
 	
 	/* 	Id of task	&& time for task*/
 	private int id;
@@ -45,6 +52,8 @@ public class Handler implements Listener{
 	
 	/* Create at inventory */
 	private Inventory InventoryTeamBlu;
+	
+	/* Create at inventory */
 	private Inventory InventoryTeamRed;
 	
 	/*	 SIZE  OF INVENTORY		*/
@@ -226,7 +235,6 @@ public class Handler implements Listener{
 		
 		
 		/*------------TELEPORT TO MAP BUTTLE-------------*/
-		
 		if(i.equals(InventoryTeamBlu)){
 			
 			Runnable s = new Runnable() {
@@ -245,7 +253,7 @@ public class Handler implements Listener{
 			};
 			id = Bukkit.getScheduler().scheduleSyncRepeatingTask(Bukkit.getPluginManager().getPlugin(PluginName), s, 0, TimeForTask);
 		}
-			//Bukkit.getScheduler().runTaskLater(Bukkit.getPluginManager().getPlugin(PluginName), r, secondsForSpawn);
+			/*Bukkit.getScheduler().runTaskLater(Bukkit.getPluginManager().getPlugin(PluginName), r, secondsForSpawn);*/
 		
 		/*------------TELEPORT TO MAP BUTTLE-------------*/
 		if(i.equals(InventoryTeamRed)){
