@@ -301,7 +301,12 @@ public class Handler implements Listener{
 				}else {
 					if(ClikedInventory.equals(InventoryTeamRed)){
 						RedTeam.add((Player)e.getWhoClicked());
-						e.getWhoClicked().sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.RED + NameOfINventory_RedTeam);
+						e.getWhoClicked().sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_BlueTeam);
+						for(Player p : onlinePlayers){
+							p.sendMessage("Players connected to migame : " + ChatColor.GREEN + "" + ChatColor.BOLD + onlinePlayers.size());
+							p.sendMessage("Players in to " + ChatColor.BLUE + " " + NameOfINventory_BlueTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + BlueTeam.size());
+							p.sendMessage("Players in to " + ChatColor.RED + " " + NameOfINventory_RedTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + RedTeam.size());
+						}
 					}
 				}
 				
@@ -340,7 +345,12 @@ public class Handler implements Listener{
 				}else {
 					if(ClikedInventory.equals(InventoryTeamRed)){
 						RedTeam.add((Player)e.getWhoClicked());
-						e.getWhoClicked().sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.RED + NameOfINventory_RedTeam);
+						e.getWhoClicked().sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_BlueTeam);
+						for(Player p : onlinePlayers){
+							p.sendMessage("Players connected to migame : " + ChatColor.GREEN + "" + ChatColor.BOLD + onlinePlayers.size());
+							p.sendMessage("Players in to " + ChatColor.BLUE + " " + NameOfINventory_BlueTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + BlueTeam.size());
+							p.sendMessage("Players in to " + ChatColor.RED + " " + NameOfINventory_RedTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + RedTeam.size());
+						}
 					}
 				}
 				
@@ -379,7 +389,12 @@ public class Handler implements Listener{
 				}else {
 					if(ClikedInventory.equals(InventoryTeamRed)){
 						RedTeam.add((Player)e.getWhoClicked());
-						e.getWhoClicked().sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.RED + NameOfINventory_RedTeam);
+						e.getWhoClicked().sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_BlueTeam);
+						for(Player p : onlinePlayers){
+							p.sendMessage("Players connected to migame : " + ChatColor.GREEN + "" + ChatColor.BOLD + onlinePlayers.size());
+							p.sendMessage("Players in to " + ChatColor.BLUE + " " + NameOfINventory_BlueTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + BlueTeam.size());
+							p.sendMessage("Players in to " + ChatColor.RED + " " + NameOfINventory_RedTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + RedTeam.size());
+						}
 					}
 				}
 				
@@ -394,26 +409,47 @@ public class Handler implements Listener{
 		
 		if(onlinePlayers.size() >= PlayerToBatle && BlueTeam.size() != 0 && RedTeam.size() != 0){
 			
+				Runnable teleport = new Runnable() {
+				
+				@Override
+				public void run() {
+					for(Player p : onlinePlayers){
+						p.sendMessage(ChatColor.GREEN + "Start game in to " + ChatColor.RED + SecondToWaitForSpawn + ChatColor.GREEN + " seconds");
+
+					}
+					SecondToWaitForSpawn--;
+					if(SecondToWaitForSpawn == 0){
+						
+						for(Player p : onlinePlayers){
+							p.sendMessage(ChatColor.YELLOW + "Teleporting...");
+
+						}
+						
+						Bukkit.getScheduler().cancelTask(id);
+						
+						for(Player p : BlueTeam){
+							p.teleport(new Location(e.getWhoClicked().getLocation().getWorld(), BlueTeamCoordination[0], BlueTeamCoordination[1], BlueTeamCoordination[2]));
+						}
+						
+						for(Player p : RedTeam){
+							p.teleport(new Location(e.getWhoClicked().getLocation().getWorld(), RedTeamCoordination[0], RedTeamCoordination[1], RedTeamCoordination[2]));
+						}
+						
+						
+						SecondToWaitForSpawn = ReloaderOfTimeSpawn;
+					}
+				}
+			};
+			
+			
+			
 			
 			/*------------TELEPORT TO MAP BUTTLE-------------*/
 			
 			if(i.equals(InventoryTeamBlu)){
 				if((e.getCurrentItem().equals(Potion)) || (e.getCurrentItem().equals(Golden_sword)) || (e.getCurrentItem().equals(Bow))){
-					Runnable s = new Runnable() {
-						
-						@Override
-						public void run() {
-							e.getWhoClicked().sendMessage(ChatColor.GREEN + "Start game in to " + ChatColor.RED + SecondToWaitForSpawn + ChatColor.GREEN + " seconds");
-							SecondToWaitForSpawn--;
-							if(SecondToWaitForSpawn == 0){
-								e.getWhoClicked().sendMessage(ChatColor.YELLOW + "Teleporting...");
-								Bukkit.getScheduler().cancelTask(id);
-								e.getWhoClicked().teleport(new Location(e.getWhoClicked().getLocation().getWorld(), BlueTeamCoordination[0], BlueTeamCoordination[1], BlueTeamCoordination[2]));
-								SecondToWaitForSpawn = ReloaderOfTimeSpawn;
-							}
-						}
-					};
-					id = Bukkit.getScheduler().scheduleSyncRepeatingTask(Bukkit.getPluginManager().getPlugin(PluginName), s, 0, TimeForTask);
+					
+					id = Bukkit.getScheduler().scheduleSyncRepeatingTask(Bukkit.getPluginManager().getPlugin(PluginName), teleport, 0, TimeForTask);
 				}
 			}
 			
@@ -423,23 +459,14 @@ public class Handler implements Listener{
 			
 			if(i.equals(InventoryTeamRed)){
 					if((e.getCurrentItem().equals(Potion)) || (e.getCurrentItem().equals(Golden_sword)) || (e.getCurrentItem().equals(Bow))){
-						Runnable s = new Runnable() {
 						
-						@Override
-						public void run() {
-							e.getWhoClicked().sendMessage(ChatColor.GREEN + "Start game in to " + ChatColor.RED + SecondToWaitForSpawn + ChatColor.GREEN + " seconds");
-							SecondToWaitForSpawn--;
-							if(SecondToWaitForSpawn == 0){
-								e.getWhoClicked().sendMessage(ChatColor.YELLOW + "Teleporting...");
-								Bukkit.getScheduler().cancelTask(id);
-								e.getWhoClicked().teleport(new Location(e.getWhoClicked().getLocation().getWorld(), RedTeamCoordination[0], RedTeamCoordination[1], RedTeamCoordination[2]));
-								SecondToWaitForSpawn = ReloaderOfTimeSpawn;
-							}	
-						}
-					};
-					id = Bukkit.getScheduler().scheduleSyncRepeatingTask(Bukkit.getPluginManager().getPlugin(PluginName), s, 0, TimeForTask);
+					id = Bukkit.getScheduler().scheduleSyncRepeatingTask(Bukkit.getPluginManager().getPlugin(PluginName), teleport, 0, TimeForTask);
 				}
 			}
+		
+			
+			
+			
 		}
 		
 		
