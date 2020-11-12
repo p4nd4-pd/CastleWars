@@ -2,3 +2,6 @@ name: CastleWars
 main: CastleWarsPackage.Main
 version: 0.1
 api-version: 1.13
+commands:
+   CastleWars:
+       description: Use for teleport to spawn of game CastleWars

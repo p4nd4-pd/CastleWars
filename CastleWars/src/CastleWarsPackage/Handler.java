@@ -1,6 +1,9 @@
 package CastleWarsPackage;
 
+import java.util.ArrayList;
+
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -12,26 +15,39 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 
 public class Handler implements Listener{
-
-	private Main MainClassOfPlugin;
 	
-	/*----------CREAT CONSTRUCTOR--------------*/
-	public Handler(Main MainClassOfPlugin){
-		this.MainClassOfPlugin = MainClassOfPlugin; 
-	}
+	/*-----------SPAWN COORDINATION BLOCK----------------*/
+	/* BLUE */
+	private double blueX;
+	private double blueY;
+	private double blueZ;
 	
-	@EventHandler
-	public void join(PlayerJoinEvent event){
-		Player player = event.getPlayer();
-		ItemStack item = new ItemStack(Material.GOLDEN_APPLE);
-		player.getInventory().addItem(item);
+	/* RED	*/
+	private double redX;
+	private double redY;
+	private double redZ;
+	
+	/*------------------CONSTRUCTOR-------------------*/
+	public Handler(Main plugin) {
+		
+		/* GETTING COORDINATION OF BLOCK (BLUE) */
+		this.blueX = plugin.getBlueX();
+		this.blueY = plugin.getBlueY();
+		this.blueZ = plugin.getBlueZ();
+		
+		/* GETTING COORDINATION OF BLOCK (RED) */
+		this.redX = plugin.getRedX();
+		this.redY = plugin.getRedY();
+		this.redZ = plugin.getRedZ();
+		
 	}
 	
 	/* Name of plugin */
-	private String PluginName = MainClassOfPlugin.getConfig().getString("PluginName");
+	private String PluginName = "CastleWars";
 	
 	/* 	Id of task	&& time for task*/
 	private int id;
@@ -104,18 +120,58 @@ public class Handler implements Listener{
 	private ItemStack ENCHANTED_APPLE = new ItemStack(Material.ENCHANTED_GOLDEN_APPLE, 20);
 
 	
+	/*------------------CREATE LIST OF PLAYERS----------------------*/
+	private ArrayList<Player> onlinePlayers = new ArrayList<Player>();
+	
+	private ArrayList<Player> RedTeam = new ArrayList<Player>();
+	private ArrayList<Player> BlueTeam = new ArrayList<Player>();
+	
+	/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!----PlayerToBatle---!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+	private int PlayerToBatle = 2;
 	
 	
+	/* |||||||||||||||||||||||||||||||||||||||||||||||||| PlayerJoinEvent |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+	@EventHandler
+	public void join(PlayerJoinEvent event){
+		Player player = event.getPlayer();
+		ItemStack item = new ItemStack(Material.GOLDEN_APPLE);
+		player.getInventory().addItem(item);
+	}
+	
+	
+	
+	/* |||||||||||||||||||||||||||||||||||||||||||||||||| PlayerInteractEvent |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 	@EventHandler
 	public void SelectTeam(PlayerInteractEvent ivent){
 		
 		/* Get Players*/
 		Player p = ivent.getPlayer();
 		
-		if(ivent.getAction() == Action.RIGHT_CLICK_BLOCK && ivent.getClickedBlock().getType() == Material.BLUE_WOOL){
-			
+		if((ivent.getAction() == Action.RIGHT_CLICK_BLOCK) && (ivent.getClickedBlock().getType() == Material.BLUE_WOOL)
+				&& (ivent.getClickedBlock().getX() == blueX) && (ivent.getClickedBlock().getY() == blueY) && (ivent.getClickedBlock().getZ() == blueZ)){
+					
 			/* Set default size of inventory*/
-			InventoryTeamBlu = Bukkit.createInventory(null, SizeOfInventory, NameOfINventory_BlueTeam);
+			InventoryTeamBlu = Bukkit.createInventory(null, SizeOfInventory,ChatColor.BLUE + NameOfINventory_BlueTeam + ChatColor.AQUA  + " " + ChatColor.BOLD +  "[ " + PluginName + " ]");
+			
+			
+			/*----------------------------------------------CREATING META DATA OF CLASEES------------------------------------------*/
+			
+			/*		Meta_bow_blue		*/
+			ItemMeta Meta_bow_blue = Bow.getItemMeta();
+			Meta_bow_blue.setDisplayName(ChatColor.BLUE + "Class " + ChatColor.BOLD + "ARCHER");
+			Bow.setItemMeta(Meta_bow_blue);
+			
+			/*		Meta_bow_blue		*/
+			ItemMeta Meta_sword_blue = Golden_sword.getItemMeta();
+			Meta_sword_blue.setDisplayName(ChatColor.BLUE + "Class " + ChatColor.BOLD + "INFANTRY");
+			Golden_sword.setItemMeta(Meta_sword_blue);
+			
+			/*		Meta_bow_blue		*/
+			ItemMeta Meta_potion_blue = Potion.getItemMeta();
+			Meta_potion_blue.setDisplayName(ChatColor.BLUE + "Class " + ChatColor.BOLD + "MAGICIAN");
+			Potion.setItemMeta(Meta_potion_blue);
+			
+			/*----------------------------------------------END CREATING META DATA OF CLASEES--------------------------------------*/
 			
 			/* Add item to inventory*/
 			for (int i = 0; i < InventoryTeamBlu.getSize(); i++) {
@@ -138,10 +194,31 @@ public class Handler implements Listener{
 			p.openInventory(InventoryTeamBlu);
 			
 		}else {
-			if(ivent.getAction() == Action.RIGHT_CLICK_BLOCK && ivent.getClickedBlock().getType() == Material.RED_WOOL){
+			if(ivent.getAction() == Action.RIGHT_CLICK_BLOCK && ivent.getClickedBlock().getType() == Material.RED_WOOL 
+					&& (ivent.getClickedBlock().getX() == redX) && (ivent.getClickedBlock().getY() == redY) && (ivent.getClickedBlock().getZ() == redZ)){
 				
 				/* Set default size of inventory*/
-				InventoryTeamRed = Bukkit.createInventory(null, SizeOfInventory, NameOfINventory_RedTeam);
+				InventoryTeamRed = Bukkit.createInventory(null, SizeOfInventory, ChatColor.RED + NameOfINventory_RedTeam + ChatColor.AQUA  + " " + ChatColor.BOLD + "[ " + PluginName + " ]");
+				
+				
+				/*----------------------------------------------CREATING META DATA OF CLASEES------------------------------------------*/
+				
+				/*		Meta_bow_red		*/
+				ItemMeta Meta_bow_red = Bow.getItemMeta();
+				Meta_bow_red.setDisplayName(ChatColor.RED + "Class " + ChatColor.BOLD + "ARCHER");
+				Bow.setItemMeta(Meta_bow_red);
+				
+				/*		Meta_sword_red		*/
+				ItemMeta Meta_sword_red = Golden_sword.getItemMeta();
+				Meta_sword_red.setDisplayName(ChatColor.RED + "Class " + ChatColor.BOLD + "INFANTRY");
+				Golden_sword.setItemMeta(Meta_sword_red);
+				
+				/*		Meta_potion_red		*/
+				ItemMeta Meta_potion_red = Potion.getItemMeta();
+				Meta_potion_red.setDisplayName(ChatColor.RED + "Class " + ChatColor.BOLD + "MAGICIAN");
+				Potion.setItemMeta(Meta_potion_red);
+				
+				/*----------------------------------------------END CREATING META DATA OF CLASEES--------------------------------------*/
 				
 				/* Add item to inventory*/
 				for (int i = 0; i < InventoryTeamRed.getSize(); i++) {
@@ -166,6 +243,10 @@ public class Handler implements Listener{
 		}
 	}
 	
+	
+	
+	/* |||||||||||||||||||||||||||||||||||||||||||||||||| InventoryClickEvent |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+	
 	@EventHandler
 	public void InventoryChecker(InventoryClickEvent e){
 		/* NO set/get item to castom Inventory	*/
@@ -181,99 +262,187 @@ public class Handler implements Listener{
 			e.setCancelled(true);
 		
 		
-		/*--------------SELECT CALSS----------------*/
+		/* ------ Add and control of list player in gane ---------*/
 		
-		/*		BOW CLASS		*/
-		if(e.getCurrentItem().equals(Bow)){
-			/*	Ecqupiment ad eat */
-			e.getWhoClicked().getInventory().addItem(Bow);
-			e.getWhoClicked().getInventory().addItem(bow_arrow);
-			e.getWhoClicked().getInventory().addItem(bow_leather_helmet);
-			e.getWhoClicked().getInventory().addItem(bow_leather_chestplate);
-			e.getWhoClicked().getInventory().addItem(bow_leather_leggings);
-			e.getWhoClicked().getInventory().addItem(bow_leather_boots);
-			e.getWhoClicked().getInventory().addItem(bow_water_bucket);
+		if(onlinePlayers.contains((Player)e.getWhoClicked())){
+			e.getWhoClicked().sendMessage(ChatColor.RED + "Did you have just selected class!!!");
+		}else {
 			
-			e.getWhoClicked().getInventory().addItem(golden_apple);
-			e.getWhoClicked().getInventory().addItem(cooked_porkchop);
-			e.getWhoClicked().getInventory().addItem(bread);
+			onlinePlayers.add((Player)e.getWhoClicked());
+			/*--------------SELECT CALSS----------------*/
 			
-		}
-		
-		/*		SWORD CLASS		*/
-		if(e.getCurrentItem().equals(Golden_sword)){
-			/*	Ecqupiment ad eat */
-			e.getWhoClicked().getInventory().addItem(Sword_iron_sword);
-			e.getWhoClicked().getInventory().addItem(Sword_golden_helmet);
-			e.getWhoClicked().getInventory().addItem(Sword_golden_chestplate);
-			e.getWhoClicked().getInventory().addItem(Sword_golden_leggings);
-			e.getWhoClicked().getInventory().addItem(Sword_golden_boots);
-			e.getWhoClicked().getInventory().addItem(Sword_water_bucket);
-			
-			e.getWhoClicked().getInventory().addItem(golden_apple);
-			e.getWhoClicked().getInventory().addItem(cooked_porkchop);
-			e.getWhoClicked().getInventory().addItem(bread);
-			
-		}
-		
-		/*		POTION CLASS		*/
-		if(e.getCurrentItem().equals(Potion)){
-			/*	Ecqupiment ad eat */
-			e.getWhoClicked().getInventory().addItem(Potion_flint_and_steel);
-			e.getWhoClicked().getInventory().addItem(Potion_chainmail_helmet);
-			e.getWhoClicked().getInventory().addItem(Potion_chainmail_chestplate);
-			e.getWhoClicked().getInventory().addItem(Potion_chainmail_leggings);
-			e.getWhoClicked().getInventory().addItem(Potion_chainmail_boots);
-			e.getWhoClicked().getInventory().addItem(Potion_COBWEB);
-			
-			e.getWhoClicked().getInventory().addItem(golden_apple);
-			e.getWhoClicked().getInventory().addItem(cooked_porkchop);
-			e.getWhoClicked().getInventory().addItem(bread);
-			e.getWhoClicked().getInventory().addItem(ENCHANTED_APPLE);
-			
-		}
-		
-		
-		/*------------TELEPORT TO MAP BUTTLE-------------*/
-		if(i.equals(InventoryTeamBlu)){
-			
-			Runnable s = new Runnable() {
+			/*		BOW CLASS		*/
+			if(e.getCurrentItem().equals(Bow)){
+				/*	Ecqupiment ad eat */
+				e.getWhoClicked().getInventory().addItem(Bow);
+				e.getWhoClicked().getInventory().addItem(bow_arrow);
+				e.getWhoClicked().getInventory().addItem(bow_leather_helmet);
+				e.getWhoClicked().getInventory().addItem(bow_leather_chestplate);
+				e.getWhoClicked().getInventory().addItem(bow_leather_leggings);
+				e.getWhoClicked().getInventory().addItem(bow_leather_boots);
+				e.getWhoClicked().getInventory().addItem(bow_water_bucket);
 				
-				@Override
-				public void run() {
-					e.getWhoClicked().sendMessage("Wait Second : " + SecondToWaitForSpawn);
-					SecondToWaitForSpawn--;
-					if(SecondToWaitForSpawn == 0){
-						e.getWhoClicked().sendMessage("Teleporting...");
-						Bukkit.getScheduler().cancelTask(id);
-						e.getWhoClicked().teleport(new Location(e.getWhoClicked().getLocation().getWorld(), BlueTeamCoordination[0], BlueTeamCoordination[1], BlueTeamCoordination[2]));
-						SecondToWaitForSpawn = ReloaderOfTimeSpawn;
+				e.getWhoClicked().getInventory().addItem(golden_apple);
+				e.getWhoClicked().getInventory().addItem(cooked_porkchop);
+				e.getWhoClicked().getInventory().addItem(bread);
+				
+				
+				/*----- ADD TO LIST OF TEAM--------*/
+				if(ClikedInventory.equals(InventoryTeamBlu)){
+					BlueTeam.add((Player)e.getWhoClicked());
+					e.getWhoClicked().sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_BlueTeam);
+					
+					for(Player p : onlinePlayers){
+						p.sendMessage("Players connected to migame : " + ChatColor.GREEN + "" + ChatColor.BOLD + onlinePlayers.size());
+						p.sendMessage("Players in to " + ChatColor.BLUE + " " + NameOfINventory_BlueTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + BlueTeam.size());
+						p.sendMessage("Players in to " + ChatColor.RED + " " + NameOfINventory_RedTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + RedTeam.size());
+					}
+					
+				}else {
+					if(ClikedInventory.equals(InventoryTeamRed)){
+						RedTeam.add((Player)e.getWhoClicked());
+						e.getWhoClicked().sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.RED + NameOfINventory_RedTeam);
 					}
 				}
-			};
-			id = Bukkit.getScheduler().scheduleSyncRepeatingTask(Bukkit.getPluginManager().getPlugin(PluginName), s, 0, TimeForTask);
-		}
-			/*Bukkit.getScheduler().runTaskLater(Bukkit.getPluginManager().getPlugin(PluginName), r, secondsForSpawn);*/
-		
-		/*------------TELEPORT TO MAP BUTTLE-------------*/
-		if(i.equals(InventoryTeamRed)){
-			
-				Runnable s = new Runnable() {
 				
-				@Override
-				public void run() {
-					e.getWhoClicked().sendMessage("Wait Second : " + SecondToWaitForSpawn);
-					SecondToWaitForSpawn--;
-					if(SecondToWaitForSpawn == 0){
-						e.getWhoClicked().sendMessage("Teleporting...");
-						Bukkit.getScheduler().cancelTask(id);
-						e.getWhoClicked().teleport(new Location(e.getWhoClicked().getLocation().getWorld(), RedTeamCoordination[0], RedTeamCoordination[1], RedTeamCoordination[2]));
-						SecondToWaitForSpawn = ReloaderOfTimeSpawn;
-					}	
+				
+				
+				
+				
+			}
+			
+			/*		SWORD CLASS		*/
+			if(e.getCurrentItem().equals(Golden_sword)){
+				/*	Ecqupiment ad eat */
+				e.getWhoClicked().getInventory().addItem(Sword_iron_sword);
+				e.getWhoClicked().getInventory().addItem(Sword_golden_helmet);
+				e.getWhoClicked().getInventory().addItem(Sword_golden_chestplate);
+				e.getWhoClicked().getInventory().addItem(Sword_golden_leggings);
+				e.getWhoClicked().getInventory().addItem(Sword_golden_boots);
+				e.getWhoClicked().getInventory().addItem(Sword_water_bucket);
+				
+				e.getWhoClicked().getInventory().addItem(golden_apple);
+				e.getWhoClicked().getInventory().addItem(cooked_porkchop);
+				e.getWhoClicked().getInventory().addItem(bread);
+				
+				
+				/*----- ADD TO LIST OF TEAM--------*/
+				if(ClikedInventory.equals(InventoryTeamBlu)){
+					BlueTeam.add((Player)e.getWhoClicked());
+					e.getWhoClicked().sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_BlueTeam);
+					
+					for(Player p : onlinePlayers){
+						p.sendMessage("Players connected to migame : " + ChatColor.GREEN + "" + ChatColor.BOLD + onlinePlayers.size());
+						p.sendMessage("Players in to " + ChatColor.BLUE + " " + NameOfINventory_BlueTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + BlueTeam.size());
+						p.sendMessage("Players in to " + ChatColor.RED + " " + NameOfINventory_RedTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + RedTeam.size());
+					}
+					
+				}else {
+					if(ClikedInventory.equals(InventoryTeamRed)){
+						RedTeam.add((Player)e.getWhoClicked());
+						e.getWhoClicked().sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.RED + NameOfINventory_RedTeam);
+					}
 				}
-			};
-			id = Bukkit.getScheduler().scheduleSyncRepeatingTask(Bukkit.getPluginManager().getPlugin(PluginName), s, 0, TimeForTask);
-
+				
+				
+				
+				
+			}
+			
+			/*		POTION CLASS		*/
+			if(e.getCurrentItem().equals(Potion)){
+				/*	Ecqupiment ad eat */
+				e.getWhoClicked().getInventory().addItem(Potion_flint_and_steel);
+				e.getWhoClicked().getInventory().addItem(Potion_chainmail_helmet);
+				e.getWhoClicked().getInventory().addItem(Potion_chainmail_chestplate);
+				e.getWhoClicked().getInventory().addItem(Potion_chainmail_leggings);
+				e.getWhoClicked().getInventory().addItem(Potion_chainmail_boots);
+				e.getWhoClicked().getInventory().addItem(Potion_COBWEB);
+				
+				e.getWhoClicked().getInventory().addItem(golden_apple);
+				e.getWhoClicked().getInventory().addItem(cooked_porkchop);
+				e.getWhoClicked().getInventory().addItem(bread);
+				e.getWhoClicked().getInventory().addItem(ENCHANTED_APPLE);
+				
+				
+				/*----- ADD TO LIST OF TEAM--------*/
+				if(ClikedInventory.equals(InventoryTeamBlu)){
+					BlueTeam.add((Player)e.getWhoClicked());
+					e.getWhoClicked().sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_BlueTeam);
+					
+					for(Player p : onlinePlayers){
+						p.sendMessage("Players connected to migame : " + ChatColor.GREEN + "" + ChatColor.BOLD + onlinePlayers.size());
+						p.sendMessage("Players in to " + ChatColor.BLUE + " " + NameOfINventory_BlueTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + BlueTeam.size());
+						p.sendMessage("Players in to " + ChatColor.RED + " " + NameOfINventory_RedTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + RedTeam.size());
+					}
+					
+				}else {
+					if(ClikedInventory.equals(InventoryTeamRed)){
+						RedTeam.add((Player)e.getWhoClicked());
+						e.getWhoClicked().sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.RED + NameOfINventory_RedTeam);
+					}
+				}
+				
+				
+				
+			}
 		}
+		
+		
+		/*---------------------------------------------CONTROL OF PLAYERS READY TO BATLE----------------------------------------------*/
+		
+		
+		if(onlinePlayers.size() >= PlayerToBatle && BlueTeam.size() != 0 && RedTeam.size() != 0){
+			
+			
+			/*------------TELEPORT TO MAP BUTTLE-------------*/
+			
+			if(i.equals(InventoryTeamBlu)){
+				if((e.getCurrentItem().equals(Potion)) || (e.getCurrentItem().equals(Golden_sword)) || (e.getCurrentItem().equals(Bow))){
+					Runnable s = new Runnable() {
+						
+						@Override
+						public void run() {
+							e.getWhoClicked().sendMessage(ChatColor.GREEN + "Start game in to " + ChatColor.RED + SecondToWaitForSpawn + ChatColor.GREEN + " seconds");
+							SecondToWaitForSpawn--;
+							if(SecondToWaitForSpawn == 0){
+								e.getWhoClicked().sendMessage(ChatColor.YELLOW + "Teleporting...");
+								Bukkit.getScheduler().cancelTask(id);
+								e.getWhoClicked().teleport(new Location(e.getWhoClicked().getLocation().getWorld(), BlueTeamCoordination[0], BlueTeamCoordination[1], BlueTeamCoordination[2]));
+								SecondToWaitForSpawn = ReloaderOfTimeSpawn;
+							}
+						}
+					};
+					id = Bukkit.getScheduler().scheduleSyncRepeatingTask(Bukkit.getPluginManager().getPlugin(PluginName), s, 0, TimeForTask);
+				}
+			}
+			
+				/*Bukkit.getScheduler().runTaskLater(Bukkit.getPluginManager().getPlugin(PluginName), r, secondsForSpawn);*/
+			
+			/*------------TELEPORT TO MAP BUTTLE-------------*/
+			
+			if(i.equals(InventoryTeamRed)){
+					if((e.getCurrentItem().equals(Potion)) || (e.getCurrentItem().equals(Golden_sword)) || (e.getCurrentItem().equals(Bow))){
+						Runnable s = new Runnable() {
+						
+						@Override
+						public void run() {
+							e.getWhoClicked().sendMessage(ChatColor.GREEN + "Start game in to " + ChatColor.RED + SecondToWaitForSpawn + ChatColor.GREEN + " seconds");
+							SecondToWaitForSpawn--;
+							if(SecondToWaitForSpawn == 0){
+								e.getWhoClicked().sendMessage(ChatColor.YELLOW + "Teleporting...");
+								Bukkit.getScheduler().cancelTask(id);
+								e.getWhoClicked().teleport(new Location(e.getWhoClicked().getLocation().getWorld(), RedTeamCoordination[0], RedTeamCoordination[1], RedTeamCoordination[2]));
+								SecondToWaitForSpawn = ReloaderOfTimeSpawn;
+							}	
+						}
+					};
+					id = Bukkit.getScheduler().scheduleSyncRepeatingTask(Bukkit.getPluginManager().getPlugin(PluginName), s, 0, TimeForTask);
+				}
+			}
+		}
+		
+		
+		
 	}
 }
