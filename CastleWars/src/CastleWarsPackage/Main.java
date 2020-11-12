@@ -1,5 +1,7 @@
 package CastleWarsPackage;
 
+import java.util.ArrayList;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -13,6 +15,28 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main  extends JavaPlugin implements Plugin{
+	
+	/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!----PlayerToBatle---!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+	private int PlayerToBatle = 2;
+	
+	/*---------------Getters of PlayerToBatle--------------------*/
+	public int getPlayerToBatle() {
+		return PlayerToBatle;
+	}
+	
+	/*------------------CREATE LIST OF PLAYERS----------------------*/
+	private ArrayList<Player> BlueTeam = new ArrayList<Player>();
+	private ArrayList<Player> RedTeam = new ArrayList<Player>();
+	
+	/*---------------Getters of BlueTeam and RedTeam --------------------*/
+	public ArrayList<Player> getBlueTeam() {
+		return BlueTeam;
+	}
+	
+	public ArrayList<Player> getRedTeam() {
+		return RedTeam;
+	}
+	
 	
 	/*------Coordination of Gologram-----------*/
 	/* BLUE */
@@ -60,6 +84,16 @@ public class Main  extends JavaPlugin implements Plugin{
 	/* Creating of castom entity */
 	ArmorStand  ArmorStandblueBlock = (ArmorStand)  world.spawnEntity(blueBlock, EntityType.ARMOR_STAND);
 	ArmorStand  ArmorStandredBlock = (ArmorStand)  world.spawnEntity(redBlock, EntityType.ARMOR_STAND);
+	
+	
+	/* getter of ArmorStand */
+	public ArmorStand getArmorStandblueBlock() {
+		return ArmorStandblueBlock;
+	}
+	
+	public ArmorStand getArmorStandredBlock() {
+		return ArmorStandredBlock;
+	}
 
 
 	/*------------ONENABLE------------*/
@@ -75,7 +109,7 @@ public class Main  extends JavaPlugin implements Plugin{
 		ArmorStandblueBlock.setGravity(true);
 		ArmorStandblueBlock.setSmall(false);
 		ArmorStandblueBlock.setVisible(false);
-		ArmorStandblueBlock.setCustomName(ChatColor.BLUE + "" + ChatColor.BOLD + "Blue Team");
+		ArmorStandblueBlock.setCustomName(ChatColor.BLUE + "" + ChatColor.BOLD + "Blue Team" + " [ " + BlueTeam.size() + " / " + (PlayerToBatle / 2) + " ] ");
 		ArmorStandblueBlock.setCustomNameVisible(true);
 		ArmorStandblueBlock.setCanPickupItems(false);
 		
@@ -84,7 +118,7 @@ public class Main  extends JavaPlugin implements Plugin{
 		ArmorStandredBlock.setGravity(true);
 		ArmorStandredBlock.setSmall(false);
 		ArmorStandredBlock.setVisible(false);
-		ArmorStandredBlock.setCustomName(ChatColor.RED + "" + ChatColor.BOLD + "Red Team");
+		ArmorStandredBlock.setCustomName(ChatColor.RED + "" + ChatColor.BOLD + "Red Team" + " [ " + RedTeam.size() + " / " + (PlayerToBatle / 2) + " ] ");
 		ArmorStandredBlock.setCustomNameVisible(true);
 		ArmorStandredBlock.setCanPickupItems(false);
 		
@@ -98,20 +132,6 @@ public class Main  extends JavaPlugin implements Plugin{
 		ArmorStandredBlock.remove();
 		getLogger().info("Plugin disable");
 	}
-	
-	
-	/*--------Variable---------*/
-	
-	/* Name of plugin */
-	private String PluginName = "CastleWars";
-	
-	/* 	Id of task	&& time for task*/
-	private int id;
-	private int TimeForTask = 20;
-	
-	/*---------SecondToWaitForSpawn------------*/
-	private int SecondToWaitForSpawn = 10;
-	private int ReloaderOfTimeSpawn = 10;
 	
 	/*------Position of spawn Mini Game-------*/
 	private double[] PositionOfSpawnMiniGame = {243.50, 30.00, -4.50};
@@ -132,21 +152,9 @@ public class Main  extends JavaPlugin implements Plugin{
 			Location SpawnMiniGame = new Location(p.getWorld(),PositionOfSpawnMiniGame[0], PositionOfSpawnMiniGame[1], PositionOfSpawnMiniGame[2]);
 			
 			/*	Teleporting of player sender to spawn	*/
-			Runnable s = new Runnable() {
-				
-				@Override
-				public void run() {
-					p.sendMessage(ChatColor.GREEN + "Wait " + ChatColor.RED + SecondToWaitForSpawn + ChatColor.GREEN + " seconds to teleport in " + ChatColor.AQUA + "" + ChatColor.BOLD + "CastleWars Mini Game " + ChatColor.GREEN + " spawn");
-					SecondToWaitForSpawn--;
-					if(SecondToWaitForSpawn == 0){
-						p.sendMessage(ChatColor.YELLOW + "Teleporting to lobby...");
-						Bukkit.getScheduler().cancelTask(id);
-						p.teleport(SpawnMiniGame);
-						SecondToWaitForSpawn = ReloaderOfTimeSpawn;
-					}	
-				}
-			};
-			id = Bukkit.getScheduler().scheduleSyncRepeatingTask(Bukkit.getPluginManager().getPlugin(PluginName), s, 0, TimeForTask);
+			p.sendMessage(ChatColor.GREEN + "Welcom to " + ChatColor.AQUA + "" + ChatColor.BOLD + "CastleWars Mini Game ");
+			p.sendMessage(ChatColor.YELLOW + "Teleporting to lobby...");
+			p.teleport(SpawnMiniGame);
 			
 			return true;
 			

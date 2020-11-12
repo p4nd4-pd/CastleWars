@@ -4,11 +4,11 @@ ReloaderOfTimeSpawn: 10
 SizeOfInventory: 27
 NameOfINventory_BlueTeam: 'Blue Team'
 BlueTeamCoordination:
-				x: 254.00
-				y: 30.00
-				z: 17.00
+             x: 254.00
+             y: 30.00
+             z: 17.00
 NameOfINventory_RedTeam: 'Red Team'
 RedTeamCoordination:
-				x: 232.00
-				y: 30.00
-				z: 17.00
+             x: 232.00
+             y: 30.00
+             z: 17.00

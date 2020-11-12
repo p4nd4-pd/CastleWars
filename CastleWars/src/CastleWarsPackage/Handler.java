@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -31,6 +32,20 @@ public class Handler implements Listener{
 	private double redY;
 	private double redZ;
 	
+	/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!----PlayerToBatle---!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+	
+	/*------------------CREATE LIST OF PLAYERS----------------------*/
+	private ArrayList<Player> onlinePlayers = new ArrayList<Player>();
+	
+	private ArrayList<Player> BlueTeam;
+	private ArrayList<Player> RedTeam;
+	
+	private int PlayerToBatle;
+	
+	/* ArmorStand  ArmorStandblueBlock */
+	ArmorStand  ArmorStandblueBlock;
+	ArmorStand  ArmorStandredBlock;
+	
 	/*------------------CONSTRUCTOR-------------------*/
 	public Handler(Main plugin) {
 		
@@ -43,6 +58,18 @@ public class Handler implements Listener{
 		this.redX = plugin.getRedX();
 		this.redY = plugin.getRedY();
 		this.redZ = plugin.getRedZ();
+		
+		/*	GETTING SIZE OF ROOM (PLAYER)	*/
+		this.PlayerToBatle = plugin.getPlayerToBatle();
+		
+		/* GET LIST OF PLAYERS (BLUE and RED)*/
+		this.BlueTeam = plugin.getBlueTeam();
+		this.RedTeam = plugin.getRedTeam();
+		
+		/*	 GET ArmorStand		*/
+		this.ArmorStandblueBlock = plugin.getArmorStandblueBlock();
+		this.ArmorStandredBlock = plugin.getArmorStandredBlock();
+		
 		
 	}
 	
@@ -118,16 +145,6 @@ public class Handler implements Listener{
 	private ItemStack cooked_porkchop = new ItemStack(Material.COOKED_PORKCHOP, 16);
 	private ItemStack bread = new ItemStack(Material.BREAD, 5);
 	private ItemStack ENCHANTED_APPLE = new ItemStack(Material.ENCHANTED_GOLDEN_APPLE, 20);
-
-	
-	/*------------------CREATE LIST OF PLAYERS----------------------*/
-	private ArrayList<Player> onlinePlayers = new ArrayList<Player>();
-	
-	private ArrayList<Player> RedTeam = new ArrayList<Player>();
-	private ArrayList<Player> BlueTeam = new ArrayList<Player>();
-	
-	/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!----PlayerToBatle---!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
-	private int PlayerToBatle = 2;
 	
 	
 	/* |||||||||||||||||||||||||||||||||||||||||||||||||| PlayerJoinEvent |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
@@ -291,6 +308,9 @@ public class Handler implements Listener{
 				if(ClikedInventory.equals(InventoryTeamBlu)){
 					BlueTeam.add((Player)e.getWhoClicked());
 					
+					ArmorStandblueBlock.setCustomName(ChatColor.BLUE + "" + ChatColor.BOLD + NameOfINventory_BlueTeam + " [ " + BlueTeam.size() + " / " + (PlayerToBatle / 2) + " ] ");
+					ArmorStandblueBlock.setCustomNameVisible(true);
+					
 					for(Player p : onlinePlayers){
 						p.sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_BlueTeam);
 						p.sendMessage("Players connected to migame : " + ChatColor.GREEN + "" + ChatColor.BOLD + onlinePlayers.size());
@@ -301,6 +321,9 @@ public class Handler implements Listener{
 				}else {
 					if(ClikedInventory.equals(InventoryTeamRed)){
 						RedTeam.add((Player)e.getWhoClicked());
+						
+						ArmorStandredBlock.setCustomName(ChatColor.RED + "" + ChatColor.BOLD + NameOfINventory_RedTeam + " [ " + RedTeam.size() + " / " + (PlayerToBatle / 2) + " ] ");
+						ArmorStandredBlock.setCustomNameVisible(true);
 						
 						for(Player p : onlinePlayers){
 							p.sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_RedTeam);
@@ -336,6 +359,9 @@ public class Handler implements Listener{
 				if(ClikedInventory.equals(InventoryTeamBlu)){
 					BlueTeam.add((Player)e.getWhoClicked());
 					
+					ArmorStandblueBlock.setCustomName(ChatColor.BLUE + "" + ChatColor.BOLD + NameOfINventory_BlueTeam + " [ " + BlueTeam.size() + " / " + (PlayerToBatle / 2) + " ] ");
+					ArmorStandblueBlock.setCustomNameVisible(true);
+					
 					for(Player p : onlinePlayers){
 						p.sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_BlueTeam);
 						p.sendMessage("Players connected to migame : " + ChatColor.GREEN + "" + ChatColor.BOLD + onlinePlayers.size());
@@ -346,6 +372,9 @@ public class Handler implements Listener{
 				}else {
 					if(ClikedInventory.equals(InventoryTeamRed)){
 						RedTeam.add((Player)e.getWhoClicked());
+						
+						ArmorStandredBlock.setCustomName(ChatColor.RED + "" + ChatColor.BOLD + NameOfINventory_RedTeam + " [ " + RedTeam.size() + " / " + (PlayerToBatle / 2) + " ] ");
+						ArmorStandredBlock.setCustomNameVisible(true);
 						
 						for(Player p : onlinePlayers){
 							p.sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_RedTeam);
@@ -381,6 +410,9 @@ public class Handler implements Listener{
 				if(ClikedInventory.equals(InventoryTeamBlu)){
 					BlueTeam.add((Player)e.getWhoClicked());
 					
+					ArmorStandblueBlock.setCustomName(ChatColor.BLUE + "" + ChatColor.BOLD + NameOfINventory_BlueTeam + " [ " + BlueTeam.size() + " / " + (PlayerToBatle / 2) + " ] ");
+					ArmorStandblueBlock.setCustomNameVisible(true);
+					
 					for(Player p : onlinePlayers){
 						p.sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_BlueTeam);
 						p.sendMessage("Players connected to migame : " + ChatColor.GREEN + "" + ChatColor.BOLD + onlinePlayers.size());
@@ -391,6 +423,9 @@ public class Handler implements Listener{
 				}else {
 					if(ClikedInventory.equals(InventoryTeamRed)){
 						RedTeam.add((Player)e.getWhoClicked());
+						
+						ArmorStandredBlock.setCustomName(ChatColor.RED + "" + ChatColor.BOLD + NameOfINventory_RedTeam + " [ " + RedTeam.size() + " / " + (PlayerToBatle / 2) + " ] ");
+						ArmorStandredBlock.setCustomNameVisible(true);
 						
 						for(Player p : onlinePlayers){
 							p.sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_RedTeam);
