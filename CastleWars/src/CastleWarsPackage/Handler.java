@@ -290,9 +290,9 @@ public class Handler implements Listener{
 				/*----- ADD TO LIST OF TEAM--------*/
 				if(ClikedInventory.equals(InventoryTeamBlu)){
 					BlueTeam.add((Player)e.getWhoClicked());
-					e.getWhoClicked().sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_BlueTeam);
 					
 					for(Player p : onlinePlayers){
+						p.sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_BlueTeam);
 						p.sendMessage("Players connected to migame : " + ChatColor.GREEN + "" + ChatColor.BOLD + onlinePlayers.size());
 						p.sendMessage("Players in to " + ChatColor.BLUE + " " + NameOfINventory_BlueTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + BlueTeam.size());
 						p.sendMessage("Players in to " + ChatColor.RED + " " + NameOfINventory_RedTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + RedTeam.size());
@@ -301,8 +301,9 @@ public class Handler implements Listener{
 				}else {
 					if(ClikedInventory.equals(InventoryTeamRed)){
 						RedTeam.add((Player)e.getWhoClicked());
-						e.getWhoClicked().sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_BlueTeam);
+						
 						for(Player p : onlinePlayers){
+							p.sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_RedTeam);
 							p.sendMessage("Players connected to migame : " + ChatColor.GREEN + "" + ChatColor.BOLD + onlinePlayers.size());
 							p.sendMessage("Players in to " + ChatColor.BLUE + " " + NameOfINventory_BlueTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + BlueTeam.size());
 							p.sendMessage("Players in to " + ChatColor.RED + " " + NameOfINventory_RedTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + RedTeam.size());
@@ -334,9 +335,9 @@ public class Handler implements Listener{
 				/*----- ADD TO LIST OF TEAM--------*/
 				if(ClikedInventory.equals(InventoryTeamBlu)){
 					BlueTeam.add((Player)e.getWhoClicked());
-					e.getWhoClicked().sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_BlueTeam);
 					
 					for(Player p : onlinePlayers){
+						p.sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_BlueTeam);
 						p.sendMessage("Players connected to migame : " + ChatColor.GREEN + "" + ChatColor.BOLD + onlinePlayers.size());
 						p.sendMessage("Players in to " + ChatColor.BLUE + " " + NameOfINventory_BlueTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + BlueTeam.size());
 						p.sendMessage("Players in to " + ChatColor.RED + " " + NameOfINventory_RedTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + RedTeam.size());
@@ -345,8 +346,9 @@ public class Handler implements Listener{
 				}else {
 					if(ClikedInventory.equals(InventoryTeamRed)){
 						RedTeam.add((Player)e.getWhoClicked());
-						e.getWhoClicked().sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_BlueTeam);
+						
 						for(Player p : onlinePlayers){
+							p.sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_RedTeam);
 							p.sendMessage("Players connected to migame : " + ChatColor.GREEN + "" + ChatColor.BOLD + onlinePlayers.size());
 							p.sendMessage("Players in to " + ChatColor.BLUE + " " + NameOfINventory_BlueTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + BlueTeam.size());
 							p.sendMessage("Players in to " + ChatColor.RED + " " + NameOfINventory_RedTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + RedTeam.size());
@@ -378,9 +380,9 @@ public class Handler implements Listener{
 				/*----- ADD TO LIST OF TEAM--------*/
 				if(ClikedInventory.equals(InventoryTeamBlu)){
 					BlueTeam.add((Player)e.getWhoClicked());
-					e.getWhoClicked().sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_BlueTeam);
 					
 					for(Player p : onlinePlayers){
+						p.sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_BlueTeam);
 						p.sendMessage("Players connected to migame : " + ChatColor.GREEN + "" + ChatColor.BOLD + onlinePlayers.size());
 						p.sendMessage("Players in to " + ChatColor.BLUE + " " + NameOfINventory_BlueTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + BlueTeam.size());
 						p.sendMessage("Players in to " + ChatColor.RED + " " + NameOfINventory_RedTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + RedTeam.size());
@@ -389,8 +391,9 @@ public class Handler implements Listener{
 				}else {
 					if(ClikedInventory.equals(InventoryTeamRed)){
 						RedTeam.add((Player)e.getWhoClicked());
-						e.getWhoClicked().sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_BlueTeam);
+						
 						for(Player p : onlinePlayers){
+							p.sendMessage(e.getWhoClicked().getName() + " was joined to " + ChatColor.BLUE + NameOfINventory_RedTeam);
 							p.sendMessage("Players connected to migame : " + ChatColor.GREEN + "" + ChatColor.BOLD + onlinePlayers.size());
 							p.sendMessage("Players in to " + ChatColor.BLUE + " " + NameOfINventory_BlueTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + BlueTeam.size());
 							p.sendMessage("Players in to " + ChatColor.RED + " " + NameOfINventory_RedTeam + " : " + ChatColor.GREEN + "" + ChatColor.BOLD + RedTeam.size());
